@@ -1,2 +1,2 @@
 # EnergyWise
-![https://unsplash.com/es/fotos/ARpmY5qq7Lk]
+![A cute kitten](http://placekitten.com/200/300)
