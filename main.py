@@ -2,5 +2,4 @@
 from libraries import *
 from login import *
 
-
-app.mainloop()
+logInWindow()
