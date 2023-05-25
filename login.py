@@ -1,4 +1,5 @@
 from libraries import customtkinter, ImageTk, Image, tkinter
+from principal import homePage
 from werkzeug.security import generate_password_hash, check_password_hash
 import pandas as pd
 
@@ -17,17 +18,30 @@ def sigInWindow():
         else:
             return False
 
+    def nameVerfication():
+        sig_entry4.configure(border_color='#565b5e')
+        name = sig_entry4.get()
+        if len(name) == 0:
+            sig_entry4.configure(border_color='#565b5e')
+            return False
+        elif name.isalpha():
+            return True
+        else:
+            l4.configure(text='Nombre invalido', text_color='red')
+            sig_entry4.configure(border_color='red')
+            return False
+
     def sigInButtonAction():
         # verificar contraseña y correo
-        if same_password_verification(0) and verificationMail():
+        if same_password_verification(0) and verificationMail() and nameVerfication():
             email = sig_entry1.get()
             password = sig_entry2.get()
             name = sig_entry4.get()
             name = name.capitalize()
             lastname = sig_entry5.get()
             lastname = lastname.capitalize()
-            # encriptar contraseña
             password = generate_password_hash(password)
+
             # crear usuario
             userData = {'email': email, 'password': password,
                         'name': name, 'lastname': lastname}
@@ -130,11 +144,12 @@ def sigInWindow():
     sig_entry4 = customtkinter.CTkEntry(
         master=sigframe, width=220, height=40, placeholder_text='Nombre')
     sig_entry4.place(x=50, y=210)
+    sig_entry4.bind(
+        "<FocusOut>", nameVerfication())
     sig_entry4.bind("<Return>", lambda e: focus_next_widget(e, sig_entry5))
     sig_entry4.bind(
         "<FocusIn>", lambda e: sig_entry4.configure(border_color='white'))
-    sig_entry4.bind(
-        "<FocusOut>", lambda e: sig_entry4.configure(border_color='#565b5e'))
+    sig_entry4.bind("<Key>", lambda e: l4.configure(text_color='#2b2b2b'))
 
     sig_entry5 = customtkinter.CTkEntry(
         master=sigframe, width=220, height=40, placeholder_text='Apellido')
@@ -143,8 +158,9 @@ def sigInWindow():
         "<Return>", sigInButtonAction())
     sig_entry5.bind(
         "<FocusIn>", lambda e: sig_entry5.configure(border_color='white'))
-    sig_entry5.bind(
-        "<FocusOut>", lambda e: sig_entry5.configure(border_color='#565b5e'))
+    sig_entry5.bind("<Key>", lambda e: l4.configure(text_color='#2b2b2b'))
+    sig_entry5.bind("<FocusOut>", lambda e: sig_entry5.configure(
+        border_color='#565b5e'))
     # Create custom button for login
     sigInbutton = customtkinter.CTkButton(
         master=sigframe, width=220, height=38, text="Crear cuenta", command=sigInButtonAction, corner_radius=8)
@@ -200,20 +216,14 @@ def logInWindow():
 
     def button_function():
         if login():
-            print('Login successful')
             # destroying login window
+        
+            #creamos una variable global con el correo del usuario
+            global user
+            user = entry1.get()
+            
             app.destroy()
-            # creating custom tkinter window
-            w = customtkinter.CTk()
-            w.resizable(False, False)
-            w.geometry('1080x620')
-            w.eval('tk::PlaceWindow . center')
-            w.title('Welcome')
-            l1 = customtkinter.CTkLabel(
-                master=w, text="Home Page", font=('Century Gothic', 60))  # creating custom label
-            # placing label
-            l1.place(relx=0.5, rely=0.5,  anchor=tkinter.CENTER)
-            w.mainloop()  # running mainloop
+            homePage()
         else:
             pass
 
