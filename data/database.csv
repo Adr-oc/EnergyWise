@@ -1,3 +1,3 @@
-email,password,name,lastname,KWHJanuary,KWHFebruary,KWHMarch
+email,password,name,lastname,KWHJanuary,KWHFebruary,KWHMarch,KWHApril,KWHMay,KWHJune,KWHJuly,KWHAugust,KWHSeptember,KWHOctober,KWHNovember,KWHDecember
+@admin,pbkdf2:sha256:600000$S8U3KIf4XEAdI1n2$57aa87a243689a7eb8f7b73ebbf8b0e4e7be7fa2bee0ac86e4c99eaef3bf6957,Adrian,Orantes,650,380,720,430,
 
-ora@gmail.com,pbkdf2:sha256:600000$L4rU4cGM19X4gni8$2e64f9387254cd536e3dd40a11503d24fd4a01a60b3f52229ce3e01a1fcbec71,Adrian,Orantes
