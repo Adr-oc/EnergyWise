@@ -1,4 +1,6 @@
-from libraries import customtkinter, ImageTk, Image, tkinter
+from tkinter import messagebox
+from tkinter.ttk import Combobox
+from libraries import customtkinter,ImageTk, Image, tkinter
 import pandas as pd
 from tkinter import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -8,8 +10,7 @@ import random
 import login
 
 def homePage():
-    
-    w=Tk()
+    w=customtkinter.CTk()
     w.geometry('1100x600')
     w.configure(bg='#262626')#12c4c0')
     w.resizable(0,0)
@@ -22,29 +23,140 @@ def homePage():
 
     def default_home():
         f2=Frame(w,width=1100,height=600,bg='#262626')
-        f2.place(x=0,y=45)
+        f2.place(x=50,y=0)
         df = pd.read_csv('data/database.csv')
         df = df.loc[df['email'] == login.user]
-        texto = 'Bienvendio'+' '+ df['name'].values[0]+' '+df['lastname'].values[0]
-        l2=Label(f2,text=texto,fg='white',bg='#262626')
-        l2.config(font=('Comic Sans MS',40))
-        l2.place(x=290,y=150-45)
+        l2=Label(f2,text='Consejos: ',fg='white',bg='#262626')
+        l2.config(font=('',16))
+        l2.place(x=60,y=10)
+
+        lbienvenida = Label(f2,text='Bienvenido '+df['name'].values[0]+' '+df['lastname'].values[0],fg='white',bg='#262626')
+        lbienvenida.config(font=('',16))
+        lbienvenida.place(x=60,y=400)
+        #funcion que reemplace el texto aleatorio del label
+        def nuevo_consejo():
+            lConsej.config(text=consejosverdes())
+            
+
+        #label que muestre el texto aleatorio
+        lConsej = Label(f2, text=consejosverdes(), wraplength=300, justify=LEFT, fg='white',bg='#303030')
+        lConsej.place(x=60,y=100)
+        lConsej.config(font=('',12))
+
+        l5 = Label(f2,text='Consumo de electricidad por KWH',fg='white',bg='#262626')
+        l5.config(font=('',16))
+        l5.place(x=400,y=10)
+        
+        #mostrar todos los KWHMonth
+        t = Text(f2, height=20, width=30,bg='#303030',fg='white',font=('',12))
+        t.config(wrap=WORD)
+        #depositar los datos en el text
+        for i in df.columns:
+            if 'KWH' in i:
+                t.insert(END, i+': '+str(df[i].values[0])+'\n')
+  
+        t.place(x=400,y=50)
+        t.config(state=DISABLED)
+        
+        #boton que genere un texto aleatorio
+        boton = Button(f2, text="Nuevo Consejo", command=lambda:nuevo_consejo())
+        boton.place(x=60,y=50)
+        
+        l6 = Label(f2,text='Premios',fg='white',bg='#262626')
+        l6.config(font=('',16))
+        l6.place(x=800,y=10)
+        
+        texto = '''Estamos emocionados de anunciar nuestro nuevo programa de descuentos por consumo eléctrico. Ahora, al gastar una determinada cantidad de electricidad en kilovatios hora (kWh), podrás disfrutar de un descuento especial en tu factura. Cuanto más consumas, mayor será tu descuento.
+            Nuestro programa de descuentos se divide en tres niveles, con sus respectivos umbrales y porcentajes de descuento:
+
+            Nivel Bronce:
+            Consumo mínimo requerido: 500 kWh
+            Descuento: 5% de descuento en tu factura mensual.
+
+            Nivel Plata:
+            Consumo mínimo requerido: 1,000 kWh
+            Descuento: 10% de descuento en tu factura mensual.
+
+            Nivel Oro:
+            Consumo mínimo requerido: 2,000 kWh
+            Descuento: 15% de descuento en tu factura mensual.'''
+
+        l7 = Label(f2,text=texto,wraplength=200,justify=LEFT,fg='white',bg='#262626')
+        l7.config(font=('',10))
+        l7.place(x=800,y=50)
 
     
     def home():
         f1.destroy()
         f2=Frame(w,width=1100,height=600,bg='#262626')
-        f2.place(x=0,y=45)
-        l2=Label(f2,text='Home',fg='white',bg='#262626')
-        l2.config(font=('Comic Sans MS',90))
-        l2.place(x=290,y=150-45)
+        f2.place(x=50,y=0)
+        df = pd.read_csv('data/database.csv')
+        df = df.loc[df['email'] == login.user]
+        l2=Label(f2,text='Consejos: ',fg='white',bg='#262626')
+        l2.config(font=('',16))
+        l2.place(x=60,y=10)
+
+        lbienvenida = Label(f2,text='Bienvenido '+df['name'].values[0]+' '+df['lastname'].values[0],fg='white',bg='#262626')
+        lbienvenida.config(font=('',16))
+        lbienvenida.place(x=60,y=400)
+        #funcion que reemplace el texto aleatorio del label
+        def nuevo_consejo():
+            lConsej.config(text=consejosverdes())
+            
+
+        #label que muestre el texto aleatorio
+        lConsej = Label(f2, text=consejosverdes(), wraplength=300, justify=LEFT, fg='white',bg='#303030')
+        lConsej.place(x=60,y=100)
+        lConsej.config(font=('',12))
+
+        l5 = Label(f2,text='Consumo de electricidad por KWH',fg='white',bg='#262626')
+        l5.config(font=('',16))
+        l5.place(x=400,y=10)
+        
+        #mostrar todos los KWHMonth
+        t = Text(f2, height=20, width=30,bg='#303030',fg='white',font=('',12))
+        t.config(wrap=WORD)
+        #depositar los datos en el text
+        for i in df.columns:
+            if 'KWH' in i:
+                t.insert(END, i+': '+str(df[i].values[0])+'\n')
+  
+        t.place(x=400,y=50)
+        t.config(state=DISABLED)
+        
+        #boton que genere un texto aleatorio
+        boton = Button(f2, text="Nuevo Consejo", command=lambda:nuevo_consejo())
+        boton.place(x=60,y=50)
+        
+        l6 = Label(f2,text='Premios',fg='white',bg='#262626')
+        l6.config(font=('',16))
+        l6.place(x=800,y=10)
+        
+        texto = '''Estamos emocionados de anunciar nuestro nuevo programa de descuentos por consumo eléctrico. Ahora, al gastar una determinada cantidad de electricidad en kilovatios hora (kWh), podrás disfrutar de un descuento especial en tu factura. Cuanto más consumas, mayor será tu descuento.
+            Nuestro programa de descuentos se divide en tres niveles, con sus respectivos umbrales y porcentajes de descuento:
+
+            Nivel Bronce:
+            Consumo mínimo requerido: 500 kWh
+            Descuento: 5% de descuento en tu factura mensual.
+
+            Nivel Plata:
+            Consumo mínimo requerido: 1,000 kWh
+            Descuento: 10% de descuento en tu factura mensual.
+
+            Nivel Oro:
+            Consumo mínimo requerido: 2,000 kWh
+            Descuento: 15% de descuento en tu factura mensual.'''
+
+        l7 = Label(f2,text=texto,wraplength=200,justify=LEFT,fg='white',bg='#262626')
+        l7.config(font=('',10))
+        l7.place(x=800,y=50)
+
         toggle_win()
-    
 
     def dashboard():
         f1.destroy()
-        f2=Frame(w,width=1100,height=600,bg='#262626')
-        f2.place(x=0,y=45)
+        f2=Frame(w,width=1000,height=600,bg='#262626')
+        f2.place(x=50,y=0)
         plt.rcParams["axes.prop_cycle"] = plt.cycler(
         color=["#4C2A85", "#BE96FF", "#957DAD", "#5E366E", "#A98CCC"])
 
@@ -72,17 +184,99 @@ def homePage():
         canvas1.get_tk_widget().pack(side="left", fill="both", expand=True)
         toggle_win()
     
+    def ingresar():
+        
+        #agreagar KWHMonth depnediendo dle mes seleccionado en el combobox 
+        def agregar():
+            df = pd.read_csv('data/database.csv')
+            df = df.loc[df['email'] == login.user]
+            df['KWH'+n.get()] = int(kwh.get())
+            #no agregar el mes solo el dato
+            df.to_csv('data/database.csv',index=False)
+            messagebox.showinfo(message='KWH agregado con exito', title='Exito')
         
 
-    def dell():
+            toggle_win()
+
         f1.destroy()
-        f2=Frame(w,width=1100,height=600,bg='#262626')
-        f2.place(x=0,y=45)
-        l2=Label(f2,text='Dell',fg='black',bg='#262626')
-        l2.config(font=('Comic Sans MS',90))
-        l2.place(x=320,y=150-45)
+        f2 = Frame(w, width=1100, height=600, bg='#262626')
+        f2.place(x=50,y=0)
+        
+        df = pd.read_csv('data/database.csv')
+        df = df.loc[df['email'] == login.user]
+        
+        n = StringVar()
+        monthchoosen = Combobox(f2, width = 27, textvariable = n)
+        
+        # Adding combobox drop down list
+        monthchoosen['values'] = ('January', 
+                                'February',
+                                'March',
+                                'April',
+                                'May',
+                                'June',
+                                'July',
+                                'August',
+                                'September',
+                                'October',
+                                'November',
+                                'December')
+        
+        monthchoosen.grid(column = 1, row = 5)
+        monthchoosen.current()
+        monthchoosen.place(x=400, y=50)
+        
+        l2 = Label(f2, text='Mes: ', fg='white', bg='#262626')
+        l2.config(font=('', 12))
+        l2.place(x=400, y=20)
+        
+        l3 = Label(f2, text='KWH: ', fg='white', bg='#262626')
+        l3.config(font=('', 12))
+        l3.place(x=400, y=80)
+
+        kwh = Entry(f2, width=30)
+        kwh.place(x=400, y=100)
+
+        submitButton = Button(f2, text='Agregar', command=agregar)
+        submitButton.place(x=400, y=130)
+
+
+
         toggle_win()
 
+
+    def verpefil():
+        f1.destroy()
+        f2=Frame(w,width=1100,height=600,bg='#262626')
+        f2.place(x=50,y=0)
+        df = pd.read_csv('data/database.csv')
+        df = df.loc[df['email'] == login.user]
+        l2 = Label(f2,text='Nombre: '+df['name'].values[0],fg='white',bg='#262626')
+        l2.config(font=('',12))
+        l2.place(x=400,y=50)
+        l3 = Label(f2,text='Apellido: '+df['lastname'].values[0],fg='white',bg='#262626')
+        l3.config(font=('',12))
+        l3.place(x=400,y=70)
+        l4 = Label(f2,text='Email: '+df['email'].values[0],fg='white',bg='#262626')
+        l4.config(font=('',12))
+        l4.place(x=400,y=90)
+        l5 = Label(f2,text='Consumo de electricidad por KWH',fg='white',bg='#262626')
+        l5.config(font=('',12))
+        l5.place(x=400,y=120)
+        #mostrar todos los KWHMonth
+        t = Text(f2, height=20, width=30,bg='#303030',fg='white',font=('',12))
+        t.config(wrap=WORD)
+        #depositar los datos en el text
+        for i in df.columns:
+            if 'KWH' in i:
+                t.insert(END, i+': '+str(df[i].values[0])+'\n')
+  
+        t.place(x=400,y=150)
+        t.config(state=DISABLED)
+    
+
+        toggle_win()   
+        
 
     def toggle_win():
         global f1
@@ -117,10 +311,8 @@ def homePage():
 
         bttn(0,80,'H O M E','#0f9d9a','#12c4c0',home)
         bttn(0,117,'D A S H B O A R D','#0f9d9a','#12c4c0',dashboard)
-        bttn(0,154,'D E L L','#0f9d9a','#12c4c0',dell)
-        bttn(0,191,'A S U S','#0f9d9a','#12c4c0',None)
-        bttn(0,228,'A P P L E','#0f9d9a','#12c4c0',None)
-        bttn(0,265,'A C E R','#0f9d9a','#12c4c0',None)
+        bttn(0,154,'I N G R E S A R   D A T O S','#0f9d9a','#12c4c0',ingresar)
+        bttn(0,191,'P E R F I L','#0f9d9a','#12c4c0',verpefil)
 
         #
         def dele():
@@ -142,7 +334,8 @@ def homePage():
             command=dele,
             bg='#12c4c0',
             activebackground='#12c4c0').place(x=5,y=10)
-        
+
+
 
     default_home()
     img1 = Image.open("images/open.png")
@@ -159,3 +352,4 @@ def homePage():
 
 
     w.mainloop()
+
